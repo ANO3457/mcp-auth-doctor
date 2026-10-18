@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `--format text|json|markdown` selects the output format (text is the default); `--format markdown` prints the report as a Markdown table for pasting into an issue, and `--json` stays as an alias for `--format json`.
+
 ## [0.3.0] - 2026-10-16
 
 ### Added
