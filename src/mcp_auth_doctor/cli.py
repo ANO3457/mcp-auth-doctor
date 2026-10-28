@@ -133,7 +133,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--replay",
         metavar="FILE",
-        help="run the checks against exchanges saved with --record instead of the network",
+        help=(
+            "run the checks against exchanges saved with --record instead of the "
+            "network; '-' reads standard input"
+        ),
     )
     parser.add_argument(
         "--timeout", type=float, default=10.0, help="HTTP timeout in seconds (default 10)"
@@ -213,12 +216,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 f"{parser.prog}: error: cannot write {args.record}: {exc.strerror}", file=sys.stderr
             )
             return EXIT_USAGE
+    # Name standard input the way error messages do, not as a bare "-".
+    replayed_from = "<stdin>" if args.replay == "-" else args.replay
     if args.format == "json":
-        output = render_json(report, replayed_from=args.replay)
+        output = render_json(report, replayed_from=replayed_from)
     elif args.format == "markdown":
-        output = render_markdown(report, verbose=args.verbose, replayed_from=args.replay)
+        output = render_markdown(report, verbose=args.verbose, replayed_from=replayed_from)
     else:
-        output = render_table(report, verbose=args.verbose, replayed_from=args.replay)
+        output = render_table(report, verbose=args.verbose, replayed_from=replayed_from)
 
     print(printable(output))
     return report.exit_code
