@@ -94,6 +94,8 @@ kill "$server_pid"
 wait "$server_pid" 2>/dev/null || true
 server_pid=""
 run 1 replayed.txt --replay run.json
-diff recorded.txt replayed.txt
+# The replay header names its source; everything after it must match the live run.
+expect replayed.txt "(replayed from run.json)"
+diff <(tail -n +2 recorded.txt) <(tail -n +2 replayed.txt)
 
 echo "quick start OK on a fresh install"
