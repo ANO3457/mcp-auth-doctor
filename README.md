@@ -127,6 +127,8 @@ Exit codes: `0` every check passed (warnings and skips allowed), `1` at least on
 
 ### Recording and replaying a run
 
+Replayed text and Markdown reports identify the exchanges file after the URL; JSON reports include `replayed_from`. Live reports have no replay annotation.
+
 `--record run.json` saves what the tool sent and what came back: method, URL, status, the `content-type`, `location` and `www-authenticate` response headers, and the response body. Request headers are not saved, so values passed with `-H` stay out of the file, and JSON members named `client_secret`, `access_token`, `refresh_token`, `id_token` or `registration_access_token` are replaced with `"[redacted]"`. `--login` is refused with `--record` and `--replay`, so no real token is ever written.
 
 `--replay run.json` runs the same checks against the file with no network access and prints the same report. Attach the file to an issue when a server fails in a way that is hard to describe, or keep it as a test fixture. A request the file does not hold fails as if the server were unreachable (`not in the replay file: GET https://...`).
